@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('personal_photo')->unique();
-            $table->string('date_of_birth');
+            $table->date('date_of_birth');
             $table->string('ID_photo')->unique();
             $table->string('role');
             $table->string('fcm_token');
