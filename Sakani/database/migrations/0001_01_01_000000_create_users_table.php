@@ -17,12 +17,12 @@ return new class extends Migration
             $table->string('phone')->unique();  
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('personal_photo');
-            $table->string('date_of_birth');
-            $table->string('ID_photo');
-            $table->string('role')->default('user');
-            $table->string('fcm_token')->nullable();
-            $table->string('registration_status')->default('pending');
+            $table->string('personal_photo')->unique();
+            $table->date('date_of_birth');
+            $table->string('ID_photo')->unique();
+            $table->string('role');
+            $table->string('fcm_token');
+            $table->string('registration_status')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
