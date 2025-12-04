@@ -33,10 +33,10 @@ class StoreUserRequest extends FormRequest
         ];
         return [
             "password"=>["required"],
-            "phone"=>["required","digits:10","unique:users,phone"],
+            "phone"=>["required","digits:10","numeric","unique:users,phone"],
             "first_name"=>$nameRules,
             "last_name"=>$nameRules,
-           "date_of_birth"=>["required"],
+            "date_of_birth"=>["required"],
            "personal_photo"=>$imageRules,
             "ID_photo"=>$imageRules
         ];

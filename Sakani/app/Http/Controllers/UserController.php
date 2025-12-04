@@ -33,12 +33,3 @@ class UserController extends Controller
         
     }
 }
-// $user = User::create([
-        //     'password'=>Hash::make($request->password),
-        //     'phone'=>$request->phone,
-        //     'first_name'=> $request->first_name,
-        //     'last_name'=> $request->last_name,
-        //     'date_of_birth'=> $request->date_of_birth,
-        //     'registration_status' => 'PENDING',
-
-        // ]);

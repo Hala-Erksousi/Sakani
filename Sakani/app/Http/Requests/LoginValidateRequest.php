@@ -11,7 +11,7 @@ class LoginValidateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class LoginValidateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone'=>'required|numeric|max_digits:10',
+            'phone'=>["required","digits:10","numeric","unique:users,phone"],
             'password'=>'required|string'
         ];
     }
