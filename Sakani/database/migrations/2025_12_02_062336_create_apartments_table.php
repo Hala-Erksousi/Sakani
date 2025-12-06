@@ -10,11 +10,11 @@ return new class extends Migration
     {
         Schema::create('apartments', function (Blueprint $table) {
             $table->id();
-            $table->integer('price');
-            $table->integer('rooms');
-            $table->integer('bathrooms');
+            $table->double('price');
+            $table->smallInteger('rooms');
+            $table->smallInteger('bathrooms');
             $table->integer('space');
-            $table->integer('floor');
+            $table->smallInteger('floor');
             $table->string('title_deed');
             $table->string('governorate');
             $table->string('city');
