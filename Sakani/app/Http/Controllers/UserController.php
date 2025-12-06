@@ -19,26 +19,12 @@ class UserController extends Controller
     public function signUp(StoreUserRequest $request){
         $validateData = $request->validated();
         if($request ->hasFile('image')){
-             $path=$request -> file('image')->store('userPhotos','public');
+             $path=$request -> file('image')->store('userPhotos');
              $validateData['image']=$path;
         }
         $user = $this->userService->createNewUser($validateData);
-        return response()->json([
-            'code'=>201,
-            'message'=>'Create user Successfully',
-            'data'=>[
-                'User'=>$user
-            ]
-        ],201);
+        return $this->result('201','Create user Successfully',$user);
         
     }
 }
-// $user = User::create([
-        //     'password'=>Hash::make($request->password),
-        //     'phone'=>$request->phone,
-        //     'first_name'=> $request->first_name,
-        //     'last_name'=> $request->last_name,
-        //     'date_of_birth'=> $request->date_of_birth,
-        //     'registration_status' => 'PENDING',
 
-        // ]);
