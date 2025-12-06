@@ -19,5 +19,21 @@ class ApartmentController extends Controller
      return $this->result('201','Create apartment Successfully',$apartment);
 
     }
+    public function update(Request $request, $id){
+        $rules = [
+
+            'price'       => ['sometimes', 'decimal:1,12'],
+            'rooms'       => ['sometimes', 'integer', 'min:1'],
+            'bathrooms'   => ['sometimes', 'integer', 'min:1'],
+            'space'       => ['sometimes', 'numeric'],
+            'floor'       => 'sometimes|integer',
+            'title_deed'  => 'sometimes|string',
+            'governorate' => 'sometimes|string|max:100',
+            'city'        => 'sometimes|string|max:100',
+        ];
+        $validatedData = $request->validate($rules);
+        $apartment= $this->apartmentService->updateApartment($id, $validatedData);
+        return $this->result('200','update apartment Successfully','');
+    }
     
 }
