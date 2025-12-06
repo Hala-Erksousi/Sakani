@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('apartments', function (Blueprint $table) {
             $table->id();
-            $table->decimal('price',12,2);
+            $table->double('price',12,2);
             $table->smallInteger('rooms');
             $table->smallInteger('bathrooms');
             $table->integer('space');

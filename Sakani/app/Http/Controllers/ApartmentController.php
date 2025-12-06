@@ -22,7 +22,7 @@ class ApartmentController extends Controller
     public function update(Request $request, $id){
         $rules = [
 
-            'price'       => ['sometimes', 'decimal:1,12'],
+            'price'       => ['sometimes'],
             'rooms'       => ['sometimes', 'integer', 'min:1'],
             'bathrooms'   => ['sometimes', 'integer', 'min:1'],
             'space'       => ['sometimes', 'numeric'],

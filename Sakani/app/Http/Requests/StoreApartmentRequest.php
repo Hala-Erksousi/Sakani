@@ -30,7 +30,7 @@ class StoreApartmentRequest extends FormRequest
         'max:100'
     ] ;
         return [
-            "price"=> ["required", 'decimal:1,12'],
+            "price"=> ["required",'numeric','min:0'],
             "rooms"=>[$smallIntegerRules,'min:1'],
             "bathrooms"=>[$smallIntegerRules,'min:1'],
             "space"=>['required','integer'],
