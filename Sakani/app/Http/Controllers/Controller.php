@@ -8,7 +8,7 @@ abstract class Controller
         return response()->json([
             "code"=> $code ,
             "message"=> $message ,
-            "data"=> $data ],$code);
-
+            "data"=>$data
+        ],$code);
     }
 }

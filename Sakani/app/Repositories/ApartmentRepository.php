@@ -12,7 +12,7 @@ class ApartmentRepository{
     public function updateApartment($id, array $data){
         $apartment = Apartment::find($id);
 
-         $apartment= Apartment::query()->where('id', $id)->first();
+        $apartment= Apartment::query()->where('id', $id)->first();
          if(!$apartment){
             throw new TheModelNotFoundException();
          }

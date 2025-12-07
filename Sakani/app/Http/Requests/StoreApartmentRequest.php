@@ -20,15 +20,16 @@ class StoreApartmentRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-    { $smallIntegerRules = [
-        'required',
-        'Integer',
-    ] ;
-    $stringRules = [
-        'required',
-        'string',
-        'max:100'
-    ] ;
+    {
+        $smallIntegerRules = [
+            'required',
+            'Integer',
+        ];
+        $stringRules = [
+            'required',
+            'string',
+            'max:100'
+        ];
         return [
             "price"=> ["required",'numeric','min:0'],
             "rooms"=>[$smallIntegerRules,'min:1'],
@@ -37,9 +38,7 @@ class StoreApartmentRequest extends FormRequest
             "floor"=>$smallIntegerRules,
             "title_deed"=>$stringRules,
             "governorate"=>$stringRules,
-            "city"=> $stringRules,
-
-
+        "city"=> $stringRules
         ];
     }
 }
