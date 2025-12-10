@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('apartments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('price');
             $table->smallInteger('rooms');
             $table->smallInteger('bathrooms');
