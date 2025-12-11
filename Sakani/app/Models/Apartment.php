@@ -18,7 +18,7 @@ class Apartment extends Model
     ];
 
     public function users(){
-        return $this->belongsToMany(User::class,'user_apartment');
+        return $this->belongsTo(User::class);
     }
 
      public function booking(){

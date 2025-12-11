@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
 
     protected $fillable = [
         'password',
@@ -38,12 +38,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function apartments(){
-        return $this->belongsToMany(Apartment::class,'user_apartment');
+    public function apartments()
+    {
+        return $this->hasMany(Apartment::class);
     }
 
-    public function booking(){
+    public function booking()
+    {
         return $this->hasMany(Booking::class);
     }
-
 }
