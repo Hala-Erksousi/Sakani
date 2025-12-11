@@ -27,13 +27,9 @@ class UserController extends Controller
              $validateData['ID_photo']=$path;
         }
         $user = $this->userService->createNewUser($validateData);
-        return response()->json([
-            'code'=>201,
-            'message'=>'Create user Successfully',
-            'data'=>[
-                'User'=>$user
-            ]
-        ],201);
+        return $this->result('201','Create user Successfully',$user);
         
     }
 }
+
+

@@ -22,8 +22,8 @@ class LoginValidateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone'=>["required","digits:10","numeric","unique:users,phone"],
-            'password'=>'required|string'
+            'phone'=>['required','digits:10','numeric'],
+            'password'=>['required','string']
         ];
     }
 }
