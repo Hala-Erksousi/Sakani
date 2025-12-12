@@ -29,5 +29,9 @@ class Apartment extends Model
         return $this->hasMany(Apartment_image::class);
         
     }
+    
+    public function mainImage(){
+        return $this->hasOne(Apartment_image::class)->where('main_photo', true);
+    }
 
 }

@@ -21,6 +21,7 @@ class StoreApartmentRequest extends FormRequest
      */
     public function rules(): array
     {
+        
         $smallIntegerRules = [
             'required',
             'Integer',
@@ -38,7 +39,9 @@ class StoreApartmentRequest extends FormRequest
             "floor"=>$smallIntegerRules,
             "title_deed"=>$stringRules,
             "governorate"=>$stringRules,
-        "city"=> $stringRules
+            "city"=> $stringRules,
+            'images'=>'required|array|max:4', 
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -20,9 +17,9 @@ return new class extends Migration
             $table->string('personal_photo')->unique();
             $table->date('date_of_birth');
             $table->string('ID_photo')->unique();
-            $table->string('role');
-            $table->string('fcm_token');
-            $table->string('registration_status')->nullable();
+            $table->string('role')->default("user");
+            $table->string('fcm_token')->nullable();
+            $table->string('registration_status')->default('pending');
             $table->rememberToken();
             $table->timestamps();
         });             

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreApartmentRequest;
+use App\Http\Requests\UpdateApartmentValidateRequest;
 use App\Models\Apartment;
 use App\services\ApartmentService;
 use Illuminate\Http\Request;
@@ -15,24 +16,30 @@ class ApartmentController extends Controller
     }
     public function store(StoreApartmentRequest $request){
      $validateData = $request->validated();
-     $apartment = $this->apartmentService->createNewApartment($validateData);
-     return $this->result('201','Create apartment Successfully',$apartment);
-
+     $images = $request->file('images');
+     $apartment = $this->apartmentService->createNewApartment($validateData, $images);
+     return $this->result(201,'Create apartment Successfully',$apartment);
     }
-    public function update(Request $request, $id){
-        $rules = [
-            'price'       => ['sometimes'],
-            'rooms'       => ['sometimes', 'integer', 'min:1'],
-            'bathrooms'   => ['sometimes', 'integer', 'min:1'],
-            'space'       => ['sometimes', 'numeric'],
-            'floor'       => 'sometimes|integer',
-            'title_deed'  => 'sometimes|string',
-            'governorate' => 'sometimes|string|max:100',
-            'city'        => 'sometimes|string|max:100',
-        ];
-        $validatedData = $request->validate($rules);
+    public function update(UpdateApartmentValidateRequest $request, $id){
+        $validatedData = $request->validated();
         $apartment= $this->apartmentService->updateApartment($id, $validatedData);
-        return $this->result('200','update apartment Successfully','');
+        return $this->result(200,'update apartment Successfully');
     }
+     public function show($id)
+    {
+        $apartment = $this->apartmentService->getSpecificApartment($id);
+        return $this->result(200,'get apartment successfully',$apartment);
+    }
+
+    public function index(){
+        $allApartments = $this->apartmentService->getAllApartments();
+        return $this->result(200,'Get All Apartments Successfully',$allApartments);
+    }
+
+    public function getApartmentHome(){
+        $allApartmentsHome = $this->apartmentService->getAllApartmentsHome();
+        return $this->result(200,'Get All Apartments Successfully',$allApartmentsHome);
+    }
+    
     
 }

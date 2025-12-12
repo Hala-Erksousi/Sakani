@@ -19,9 +19,13 @@ class UserController extends Controller
     public function signUp(StoreUserRequest $request)
     {
         $validateData = $request->validated();
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('userPhotos');
-            $validateData['image'] = $path;
+        if($request ->hasFile('personal_photo')){
+             $path=$request->file('personal_photo')->store('user_photos\personal','public');
+             $validateData['personal_photo']=$path;
+        }
+        if($request ->hasFile('ID_photo')){
+             $path=$request->file('ID_photo')->store('user_photos\ID','public');
+             $validateData['ID_photo']=$path;
         }
         $user = $this->userService->createNewUser($validateData);
         return $this->result('201', 'Create user Successfully', $user);
