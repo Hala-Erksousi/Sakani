@@ -20,4 +20,10 @@ class ApartmentRepository{
           return $result;
          
     }
+    public function search(){
+        $query=Apartment::get();
+       
+        return $query;
+    }
+    
 }

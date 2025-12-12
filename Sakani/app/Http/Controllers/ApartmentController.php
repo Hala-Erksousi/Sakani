@@ -35,5 +35,10 @@ class ApartmentController extends Controller
         $apartment= $this->apartmentService->updateApartment($id, $validatedData);
         return $this->result('200','update apartment Successfully','');
     }
+    public function search(Request $request){
+        $apartment= $this->apartmentService->search($request);
+        return $this->result('200','get data Successfully',$apartment);
+
+    }
     
 }
