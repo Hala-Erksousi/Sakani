@@ -6,6 +6,7 @@ use App\Repositories\ApartmentRepository;
 use App\Exceptions\TheModelNotFoundException;
 use App\Models\Apartment;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class ApartmentService
 {
@@ -36,8 +37,6 @@ class ApartmentService
             $imageRecords[] = [
                 'path' => $path,
                 'main_photo' => $isFirstImage,
-                // 'created_at' => now(),
-                // 'updated_at' => now(),
             ];
             $isFirstImage = false;
         }
@@ -64,5 +63,22 @@ class ApartmentService
         return  $this->apartmentRepository->getAllHome();
         
     }
-    
+    public function search(Request $request)
+    {
+        $query = $this->apartmentRepository->search();
+        if ($request->filled('governorate')) {
+            $query = $query->where('governorate', $request->governorate);
+        }
+        if ($request->filled('city')) {
+            $query = $query->where('city', $request->city);
+        }
+        if ($request->filled('min_price') && $request->filled('max_price')) {
+            $query = $query->whereBetween('price', [$request->min_price, $request->max_price]);
+        }
+        if ($request->filled('min_space') && $request->filled('max_space')) {
+            $query = $query->whereBetween('space', [$request->min_space, $request->max_space]);
+        }
+       
+        return $query;
+    }
 }

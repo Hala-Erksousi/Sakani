@@ -40,6 +40,11 @@ class ApartmentController extends Controller
         $allApartmentsHome = $this->apartmentService->getAllApartmentsHome();
         return $this->result(200,'Get All Apartments Successfully',$allApartmentsHome);
     }
+    public function search(Request $request){
+        $apartment= $this->apartmentService->search($request);
+        return $this->result('200','get data Successfully',$apartment);
+
+    }
     
     
 }

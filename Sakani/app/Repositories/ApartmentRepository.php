@@ -43,4 +43,10 @@ class ApartmentRepository
         ->select('id', 'price', 'space', 'governorate', 'city')
         ->get();
     }
+    public function search(){
+        $query=Apartment::get();
+       
+        return $query;
+    }
+    
 }
