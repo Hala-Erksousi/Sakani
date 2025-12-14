@@ -10,16 +10,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('email')->unique()->nullable();
             $table->string('password');
-            $table->string('phone')->unique();  
+            $table->string('phone')->unique()->nullable(); 
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('personal_photo')->unique();
-            $table->date('date_of_birth');
-            $table->string('ID_photo')->unique();
-            $table->string('role')->default("user");
+            $table->string('personal_photo')->unique()->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('ID_photo')->unique()->nullable();
+            $table->string('role');
             $table->string('fcm_token')->nullable();
-            $table->string('registration_status')->default('pending');
+            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });             

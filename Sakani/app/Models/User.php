@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Panel;
+use Filament\Models\Contracts\HasName;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasName
 {
     use HasFactory, Notifiable, HasApiTokens;
 
     protected $fillable = [
+        'email',
         'password',
         'phone',
         'first_name',
@@ -22,7 +25,8 @@ class User extends Authenticatable
         'ID_photo',
         'role',
         'fcm_token',
-        'registration_status'
+        'is_verified'
+        // 'registration_status'
     ];
 
     protected $hidden = [
@@ -35,6 +39,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_verified' => 'boolean'
         ];
     }
 
@@ -47,4 +52,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function canAccessPanel(Panel $panel)
+    {
+        return $this->role === 'admin';
+    }
+  
+    public function getFilamentName(): string
+    {
+        // 1. إذا كان لديك اسم أول (لمستخدم عادي)، قم بعرض الاسم الكامل.
+        if ($this->first_name) {
+            return trim($this->first_name . ' ' . $this->last_name);
+        }
+        
+        // 2. إذا كان الاسم فارغاً (للمدير)، استخدم الإيميل أو اسم احتياطي ثابت.
+        // بما أن الإيميل قد يكون NULL أيضاً حسب الصورة، نفضل الاسم الثابت أو الإيميل مع التحقق.
+        return $this->email ?? 'مدير النظام'; 
+    }   
 }
