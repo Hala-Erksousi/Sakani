@@ -5,6 +5,7 @@ use App\Exceptions\BadRequestHttpException;
 use Illuminate\Support\Facades\Auth;
 use App\Exceptions\UnauthorizedHttpException;
 use App\Exceptions\ValidationException;
+use App\Exceptions\UnauthorizedException;
 
 class AuthServices{
     public function loginService($request){
@@ -30,5 +31,14 @@ class AuthServices{
             'registration_status'=>$user->registration_status,
             'token'=>$token
         ];
+    }
+
+    public function logoutService($request){
+        $user = $request->user();
+        $user->tokens()->delete();
+         if (!$request->user()) {
+            throw new UnauthorizedException();
+        }
+        $request->user()->currentAccessToken()->delete();
     }
 }

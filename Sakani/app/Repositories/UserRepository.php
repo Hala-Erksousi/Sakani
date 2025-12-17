@@ -7,4 +7,9 @@ class UserRepository{
     {
         return User::create($data);
     }
+
+    public function FindUserById($id)
+    {
+        return User::find($id);
+    }
 }

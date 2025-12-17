@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -28,6 +29,12 @@ class UserController extends Controller
              $validateData['ID_photo']=$path;
         }
         $user = $this->userService->createNewUser($validateData);
-        return $this->result('201', 'Create user Successfully', $user);
+        return $this->result(201, 'Create user Successfully', $user);
+    }
+
+    public function profile(){
+        $user = Auth::user();
+        $profile_user = $this->userService->profile($user->id);
+       return $this->result(200,'get profile successfully',$profile_user);
     }
 }
