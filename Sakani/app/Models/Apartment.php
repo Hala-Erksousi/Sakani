@@ -15,7 +15,8 @@ class Apartment extends Model
         'floor',
         'title_deed',
         'governorate',
-        'city'   
+        'city',
+        'user_id'   
     ];
 
     public function users(){

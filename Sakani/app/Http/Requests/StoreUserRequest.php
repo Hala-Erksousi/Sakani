@@ -32,13 +32,16 @@ class StoreUserRequest extends FormRequest
             "string"
         ];
         return [
+            'email' => ['nullable', 'email', 'unique:users,email'], 
             "password"=>["required"],
             "phone"=>["required","digits:10","numeric","unique:users,phone"],
             "first_name"=>$nameRules,
             "last_name"=>$nameRules,
             "date_of_birth"=>["required"],
            "personal_photo"=>$imageRules,
-            "ID_photo"=>$imageRules
+            "ID_photo"=>$imageRules,
+            "role"=>["required"]
+          
         ];
     }
 }

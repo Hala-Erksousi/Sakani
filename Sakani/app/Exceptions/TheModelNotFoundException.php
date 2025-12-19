@@ -15,6 +15,6 @@ class TheModelNotFoundException extends Exception
             'code' => 404,
             'message' => $this->getMessage()
         ],404);
-    
+        
     }
 }
