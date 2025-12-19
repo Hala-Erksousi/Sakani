@@ -20,9 +20,9 @@ class User extends Authenticatable
         'personal_photo',
         'date_of_birth',
         'ID_photo',
-        'role',
+       // 'role',
         'fcm_token',
-        'registration_status'
+        'registration_status',
     ];
 
     protected $hidden = [

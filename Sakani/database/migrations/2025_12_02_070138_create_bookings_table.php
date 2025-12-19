@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
+            $table->string('status')->default('pending');
             $table->date('start_date');
             $table->date('end_date');
             $table->foreignId('apartment_id')->constrained()->cascadeOnDelete();

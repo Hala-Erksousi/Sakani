@@ -65,7 +65,7 @@ class ApartmentService
     }
     public function search(Request $request)
     {
-        $query = $this->apartmentRepository->search();
+        $query = $this->apartmentRepository->getAllHome();
         if ($request->filled('governorate')) {
             $query = $query->where('governorate', $request->governorate);
         }

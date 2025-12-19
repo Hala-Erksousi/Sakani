@@ -12,6 +12,7 @@ class ApartmentRepository
     {
         return Apartment::create($data);
     }
+
     public function createApartmentImages(Apartment $apartment, array $imageRecords)
     {
         $apartment->apartment_images()->createMany($imageRecords);
@@ -28,6 +29,7 @@ class ApartmentRepository
         $result = $apartment->update($data);
         return $result;
     }
+
     public function FindApartmentById($id)
     {
         return Apartment::find($id);
@@ -43,6 +45,7 @@ class ApartmentRepository
         ->select('id', 'price', 'space', 'governorate', 'city')
         ->get();
     }
+    
     public function search(){
         $query=Apartment::get();
        
