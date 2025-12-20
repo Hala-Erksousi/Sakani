@@ -14,6 +14,10 @@ class AuthController extends Controller
     }
     public function login(LoginValidateRequest $request){
         $user = $this->authService->loginService($request);
+
+        if(isset($user['code']) && $user['code'] == '403'){
+           return $this->result(403, $user['message']);
+        }
         return response()->json([
             'code' =>200,
             'message'=>'user login successfully',
@@ -22,8 +26,6 @@ class AuthController extends Controller
                 'first_name' => $user['first_name'],
                 'last_name' => $user['last_name'],
                 'phone' => $user['phone'],
-                'role'=> $user['role'],
-                'registration_status'=> $user['registration_status'],
                 'token' => $user['token']
             ]
         ],200);

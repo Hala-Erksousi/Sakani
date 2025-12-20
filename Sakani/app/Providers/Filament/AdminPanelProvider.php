@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\WelcomeBanner;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Widgets\StatsOverview;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->authGuard('web')
             ->login()
             ->profile()
-            ->brandName('Sakani')
+            ->brandName('Sakani System')
             ->colors([
                 'primary' => Color::Teal,
             ])
@@ -40,9 +42,10 @@ class AdminPanelProvider extends PanelProvider
                 Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                WelcomeBanner::class,
+                StatsOverview::class
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -55,6 +58,14 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->renderHook(
+                'panels::header.title.before',
+                fn() => view('filament.widgets.custom-header-title'),
+            )
+            ->renderHook(
+                'panels::header.title.after',
+                fn() => null // هذا السطر سيقوم بإلغاء نص العنوان الافتراضي
+            )
             ->authMiddleware([
                 Authenticate::class,
             ]);

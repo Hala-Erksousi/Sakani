@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Exceptions\BadRequestHttpException;
@@ -6,29 +7,35 @@ use Illuminate\Support\Facades\Auth;
 use App\Exceptions\UnauthorizedHttpException;
 use App\Exceptions\ValidationException;
 
-class AuthServices{
-    public function loginService($request){
-        try{
+class AuthServices
+{
+    public function loginService($request)
+    {
+        try {
             $request->validated();
-            if(!Auth::attempt($request->only('phone','password'))){
+            if (!Auth::attempt($request->only('phone', 'password'))) {
                 throw new UnauthorizedHttpException();
             }
             $user = $request->user();
+            if (!$user->is_verified) {
+                return [
+                    'code' => '403',
+                    'message' => 'Your account is pending verification by the admin Please wait.'
+                ];
+            }
             $user->tokens()->delete();
             $token = $user->createToken('access_token')->plainTextToken;
-        }catch(ValidationException $e){
+        } catch (ValidationException $e) {
             throw new ValidationException($e);
-        }catch(BadRequestHttpException $e){
+        } catch (BadRequestHttpException $e) {
             throw new BadRequestHttpException();
         }
         return [
             'id' => $user->id,
-            'first_name' => $user->first_name ,
-            'last_name' => $user->last_name ,
-            'phone'=> $user->phone,
-            'role'=> $user->role,
-            'registration_status'=>$user->registration_status,
-            'token'=>$token
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'phone' => $user->phone,
+            'token' => $token
         ];
     }
 }

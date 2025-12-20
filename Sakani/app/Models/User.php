@@ -23,10 +23,8 @@ class User extends Authenticatable implements HasName
         'personal_photo',
         'date_of_birth',
         'ID_photo',
-        'role',
         'fcm_token',
         'is_verified'
-        // 'registration_status'
     ];
 
     protected $hidden = [
@@ -60,13 +58,9 @@ class User extends Authenticatable implements HasName
   
     public function getFilamentName(): string
     {
-        // 1. إذا كان لديك اسم أول (لمستخدم عادي)، قم بعرض الاسم الكامل.
         if ($this->first_name) {
             return trim($this->first_name . ' ' . $this->last_name);
         }
-        
-        // 2. إذا كان الاسم فارغاً (للمدير)، استخدم الإيميل أو اسم احتياطي ثابت.
-        // بما أن الإيميل قد يكون NULL أيضاً حسب الصورة، نفضل الاسم الثابت أو الإيميل مع التحقق.
         return $this->email ?? 'مدير النظام'; 
     }   
 }
