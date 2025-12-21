@@ -27,10 +27,12 @@ Route::middleware('auth:sanctum')
 
     Route::prefix('booking')
       ->group(function () {
+      Route::post('/calculate',[BookingController::class,'calculateBookingPrice']);
        Route::post('/', [BookingController::class,'store']);
        Route::get('/', [BookingController::class,'index']);
        Route::put('/{booking_id}/cancel', [BookingController::class,'cancelBookingByUser']);
        Route::put('/{booking_id}/update', [BookingController::class,'update']);
+
 
 
 

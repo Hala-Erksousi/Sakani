@@ -20,6 +20,7 @@ class BookingController extends Controller
     public function store(StoreBookingRequest $request){
         $validateData = $request->validated();
         $validateData['user_id']=Auth::id();
+        $validateData['total_price']=$this->bookingService->calculateBookingPrice($validateData);
         $booking = $this->bookingService->store($validateData);
         return $this->result('201', 'Create booking Successfully', $booking);
 
@@ -27,7 +28,7 @@ class BookingController extends Controller
     public function index(){
         $userId=Auth::id();
         $booking = $this->bookingService->getAll($userId);
-        return $this->result('200','get Bookings Successfully', $booking);
+        return $this->result(200,'get Bookings Successfully', $booking);
 
     }
     public function cancelBookingByUser($booking_id){
@@ -40,5 +41,12 @@ class BookingController extends Controller
          $validateData = $request->validated();
           $booking= $this->bookingService->updateDate($booking_id,$validateData);
           return $this->result('200','Update Successfully', $booking);
+     }
+     public function calculateBookingPrice(StoreBookingRequest $request){
+        $validateData = $request->validated();
+        $total_price=$this->bookingService->calculateBookingPrice($validateData);
+        return $this->result(200,"calculate total price Successfully" , $total_price);
+      
+
      }
 }
