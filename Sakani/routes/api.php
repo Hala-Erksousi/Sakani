@@ -32,11 +32,6 @@ Route::middleware('auth:sanctum')
        Route::get('/', [BookingController::class,'index']);
        Route::put('/{booking_id}/cancel', [BookingController::class,'cancelBookingByUser']);
        Route::put('/{booking_id}/update', [BookingController::class,'update']);
-
-
-
-
-
     });
 });
     
