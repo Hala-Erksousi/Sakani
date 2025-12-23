@@ -33,10 +33,7 @@ class ApartmentService
         $isFirstImage = true;
 
         foreach ($images as $image) {
-            $originalName = $image->getClientOriginalName();
-            $fileName = time() . '_' . $originalName;
-            $path = $image->storeAs('apartments', $fileName, 'public');
-          //  $path = $image->store('apartments', 'public');
+           $path = $image->store('apartments', 'public');
             $imageRecords[] = [
                 'path' => $path,
                 'main_photo' => $isFirstImage,
