@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateApartmentValidateRequest;
 use App\Models\Apartment;
 use App\services\ApartmentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApartmentController extends Controller
 {
@@ -17,7 +18,7 @@ class ApartmentController extends Controller
     public function store(StoreApartmentRequest $request){
      $validateData = $request->validated();
      $images = $request->file('images');
-     $validateData['user_id'] = auth()->id();
+     $validateData['user_id'] = Auth::id();
      $apartment = $this->apartmentService->createNewApartment($validateData, $images);
      return $this->result(201,'Create apartment Successfully',$apartment);
     }
