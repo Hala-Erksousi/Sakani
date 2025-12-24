@@ -54,6 +54,8 @@ class ApartmentService
             throw new TheModelNotFoundException();
         }
         $apartment->owner_phone = $apartment->owner->phone;
+        $apartment->first_name = $apartment->owner->first_name;
+        $apartment->last_name = $apartment->owner->last_name;
         $apartment->makeHidden('owner');
 
         return $apartment;
