@@ -40,7 +40,6 @@ class StoreUserRequest extends FormRequest
             "date_of_birth"=>["required"],
            "personal_photo"=>$imageRules,
             "ID_photo"=>$imageRules,
-           // "role"=>["required"]
           
         ];
     }

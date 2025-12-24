@@ -20,9 +20,9 @@ use Filament\Tables\Columns\TextColumn;
 
 use Filament\Tables\Table;
 // use Filament\Tables;
-use Filament\Tables\Filters\Filter; 
-use Filament\Actions\Action; 
-use Filament\Actions\EditAction; 
+use Filament\Tables\Filters\Filter;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -55,40 +55,41 @@ class UserResource extends Resource
                         'user' => 'User',
                     ])
                     ->required(),
-                    Toggle::make('is_verified')->label('Verified')->default(false)
-                    ->disabled(fn (string $operation,$record) =>$operation === 'edit' && $record && $record->is_verified),
+                Toggle::make('is_verified')->label('Verified')->default(false)
+                    ->disabled(fn(string $operation, $record) => $operation === 'edit' && $record && $record->is_verified),
             ])->columns(2),
         ]);
     }
 
     public static function table(Table $table): Table
     {
-        // return UsersTable::configure($table);
         return $table->columns([
-           // ImageColumn::make('personal_photo')->label('personal_photo')->circular(),
             TextColumn::make('first_name')->label('First Name')->searchable()->sortable(),
             TextColumn::make('last_name')->label('Last Name')->searchable()->sortable(),
             TextColumn::make('phone')->label('Phone'),
-            TextColumn::make('role')->label('Role')->badge()->color(fn(string $state): string =>match($state) {
-              'admin'=>'danger',
-              'user' => 'success',
+            TextColumn::make('role')->label('Role')->badge()->color(fn(string $state): string => match ($state) {
+                'admin' => 'danger',
+                'user' => 'success',
             }),
             IconColumn::make('is_verified')->label('Verified')->boolean(),
-           // ImageColumn::make('ID_photo')->label('ID_photo')->extraAttributes(['class'=>'cursor-pointer'])->default('No ID Photo')
         ])
-        ->filters([
-          Filter::make('pending_approval')->label('Pending Approval')->query(fn(Builder $query)=> $query->where('is_verified',false))
-        ])
-        ->actions([
-        Action::make('Verify User')->label('Verify User')
-            ->icon('heroicon-o-check-circle')
-             ->color('success')
-             ->requiresConfirmation()
-             ->action(fn(User $record)=> $record->update(['is_verified'=>true]))
-             ->hidden(fn (User $record) => $record->is_verified),
-        EditAction::make(),
-        DeleteAction::make(),
-    ]);
+            ->filters([
+                Filter::make('pending_approval')->label('Pending Approval')->query(fn(Builder $query) => $query->where('is_verified', false))
+            ])
+            ->actions([
+                Action::make('Verify User')->label('Verify User')
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->action(fn(User $record) => $record->update(['is_verified' => true]))
+                    ->hidden(fn(User $record) => $record->is_verified),
+                EditAction::make(),
+                DeleteAction::make(),
+                // Notification::make()
+                //     ->title('Your account has been activated by the admin. Welcome to the Sakani app')
+                //     ->success()
+                //     ->send()
+            ]);
     }
 
     public static function getRelations(): array

@@ -34,11 +34,6 @@ Route::middleware('auth:sanctum')
        Route::put('/{bookingId}/reject', [BookingController::class,'rejectBooking']);
        Route::put('/{bookingId}/accept', [BookingController::class,'acceptBooking']);
        Route::put('/{booking_id}/update', [BookingController::class,'update']);
-
-
-
-
-
     });
 });
     
