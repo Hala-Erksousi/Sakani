@@ -7,6 +7,7 @@ use App\Exceptions\NotAvailableDateException;
 use App\Repositories\BookingRepository;
 use App\Exceptions\TheModelNotFoundException;
 use App\Exceptions\TheUnauthorizedActionException;
+use App\Exceptions\UnauthorizedException;
 use App\Models\Booking;
 use App\Repositories\ApartmentRepository;
 use Carbon\Carbon;
@@ -72,6 +73,21 @@ class BookingService
             throw new BookingAlreadyCancelledException();
         }
         $booking->update(['status' => 'cancelled']);
+        return $booking;
+    }
+    
+    public function updateStatueBooking($bookingId,$status,$user_id){
+        $booking = $this->bookingRepository->getById($bookingId);
+        if (!$booking) {
+            throw new TheModelNotFoundException();
+        }
+        $owner_id=$booking->apartment->owner_id;
+        if($owner_id != $user_id){
+            throw new UnauthorizedException();
+        }
+      
+        $booking->update(['status' => $status]);
+        $booking->makeHidden('apartment');
         return $booking;
     }
 

@@ -45,7 +45,7 @@ class User extends Authenticatable implements HasName
 
     public function apartments()
     {
-        return $this->hasMany(Apartment::class);
+        return $this->hasMany(Apartment::class,'owner_id');
     }
 
     public function booking()

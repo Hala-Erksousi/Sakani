@@ -10,12 +10,14 @@ return new class extends Migration
     {
         Schema::create('apartments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->nullable();
+            $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete()->nullable();
             $table->double('price');
             $table->smallInteger('rooms');
             $table->smallInteger('bathrooms');
             $table->integer('space');
             $table->smallInteger('floor');
+            $table->text('description');
+            $table->date('built_date');
             $table->string('title_deed');
             $table->string('governorate');
             $table->string('city');

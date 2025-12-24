@@ -14,7 +14,7 @@ class Booking extends Model
         'apartment_id',
         'total_price'
     ];
-    public function apartments(){
+    public function apartment(){
         return $this->belongsTo(Apartment::class);
     }
     public function user(){

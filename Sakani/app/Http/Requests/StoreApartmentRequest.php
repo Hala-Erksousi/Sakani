@@ -37,6 +37,8 @@ class StoreApartmentRequest extends FormRequest
             "bathrooms"=>[$smallIntegerRules,'min:1'],
             "space"=>['required','integer'],
             "floor"=>$smallIntegerRules,
+            "description" => ['required','string','min:20','max:2000'],
+            "built_date" => ['required','date','before_or_equal:today'],
             "title_deed"=>$stringRules,
             "governorate"=>$stringRules,
             "city"=> $stringRules,

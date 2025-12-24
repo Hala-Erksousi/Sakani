@@ -21,7 +21,7 @@ class ApartmentRepository
     public function updateApartment($id, array $data)
     {
         $apartment = Apartment::find($id);
-
+        
         $apartment = Apartment::query()->where('id', $id)->first();
         if (!$apartment) {
             throw new TheModelNotFoundException();
@@ -32,7 +32,7 @@ class ApartmentRepository
 
     public function FindApartmentById($id)
     {
-        return Apartment::find($id);
+        return Apartment::with('owner:id,phone')->find($id);
     }
 
     public function getAll()

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 
 use App\Exceptions\TheModelNotFoundException;
+use App\Models\Apartment;
 use App\Models\Booking;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ public function getAll($userId){
    return $bookings = Booking::where('user_id',$userId)->get();
 }
 public function getById($id){
-    return Booking::find($id);
+   return Booking::with('apartment')->find($id);
+    //return Booking::find($id);
 }
 }

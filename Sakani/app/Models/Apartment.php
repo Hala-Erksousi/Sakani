@@ -13,14 +13,16 @@ class Apartment extends Model
         'bathrooms',
         'space',
         'floor',
+        'description',
+        'built_date',
         'title_deed',
         'governorate',
         'city',
-        'user_id'   
+        'owner_id'   
     ];
 
-    public function users(){
-        return $this->belongsTo(User::class);
+    public function owner(){
+        return $this->belongsTo(User::class,'owner_id');
     }
 
      public function booking(){
