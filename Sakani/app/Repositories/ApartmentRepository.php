@@ -30,7 +30,8 @@ class ApartmentRepository
     }
     public function FindApartmentById($id)
     {
-        return Apartment::find($id);
+        // return Apartment::find($id);
+        return Apartment::with('apartment_images')->find($id);
     }
 
     public function getAll()
