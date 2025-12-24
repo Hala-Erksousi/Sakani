@@ -32,7 +32,7 @@ class ApartmentRepository
 
     public function FindApartmentById($id)
     {
-        return Apartment::with('owner:id,phone')->find($id);
+        return Apartment::with('owner')->find($id);
     }
 
     public function getAll()

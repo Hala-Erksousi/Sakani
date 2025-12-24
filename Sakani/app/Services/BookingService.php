@@ -38,8 +38,8 @@ class BookingService
     public function checkAvailability($apartmentId, $startDate, $endDate, ?int $ignoreBookingId = null)
     {
         $query = Booking::where('apartment_id', $apartmentId)
-            ->where('status', '!=', 'cancelled')
-            ->where('status', '!=', 'rejected');
+            ->where('status', '!=', 'Cancelled')
+            ->where('status', '!=', 'Rejected');
 
         if ($ignoreBookingId) {
             $query->where('id', '!=', $ignoreBookingId);
@@ -69,10 +69,10 @@ class BookingService
         if (!$booking) {
             throw new TheModelNotFoundException();
         }
-        if ($booking->status == 'cancelled') {
+        if ($booking->status == 'Cancelled') {
             throw new BookingAlreadyCancelledException();
         }
-        $booking->update(['status' => 'cancelled']);
+        $booking->update(['status' => 'Cancelled']);
         return $booking;
     }
     
