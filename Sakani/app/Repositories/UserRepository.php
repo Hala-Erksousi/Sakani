@@ -14,9 +14,7 @@ class UserRepository{
         'first_name', 
         'last_name', 
         'personal_photo', 
-        'email', 
         'phone',
-        'date_of_birth'
     ];
         return User::find($id,$columns);
     }
