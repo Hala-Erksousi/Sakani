@@ -10,6 +10,14 @@ class UserRepository{
 
     public function FindUserById($id)
     {
-        return User::find($id);
+        $columns = [ 
+        'first_name', 
+        'last_name', 
+        'personal_photo', 
+        'email', 
+        'phone',
+        'date_of_birth'
+    ];
+        return User::find($id,$columns);
     }
 }

@@ -53,6 +53,11 @@ class ApartmentService
         if (!$apartment) {
             throw new TheModelNotFoundException();
         }
+        $apartment->owner_phone = $apartment->owner->phone;
+        $apartment->first_name = $apartment->owner->first_name;
+        $apartment->last_name = $apartment->owner->last_name;
+        $apartment->makeHidden('owner');
+
         return $apartment;
     }
 
@@ -65,7 +70,7 @@ class ApartmentService
     }
     public function search(Request $request)
     {
-        $query = $this->apartmentRepository->search();
+        $query = $this->apartmentRepository->getAllHome();
         if ($request->filled('governorate')) {
             $query = $query->where('governorate', $request->governorate);
         }

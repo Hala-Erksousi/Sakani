@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('personal_photo')->unique()->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('ID_photo')->unique()->nullable();
-            $table->string('role');
+            $table->string('role')->default('user');
             $table->string('fcm_token')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->rememberToken();

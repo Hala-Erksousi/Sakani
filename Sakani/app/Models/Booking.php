@@ -10,8 +10,11 @@ class Booking extends Model
         'status',
         'start_date',
         'end_date',
+        'user_id',
+        'apartment_id',
+        'total_price'
     ];
-    public function apartments(){
+    public function apartment(){
         return $this->belongsTo(Apartment::class);
     }
     public function user(){

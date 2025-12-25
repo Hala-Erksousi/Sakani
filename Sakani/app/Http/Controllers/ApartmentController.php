@@ -18,16 +18,18 @@ class ApartmentController extends Controller
     public function store(StoreApartmentRequest $request){
      $validateData = $request->validated();
      $images = $request->file('images');
-     $validateData['user_id'] = Auth::id();
+     $validateData['owner_id'] = Auth::id();
      $apartment = $this->apartmentService->createNewApartment($validateData, $images);
      return $this->result(201,'Create apartment Successfully',$apartment);
     }
+
     public function update(UpdateApartmentValidateRequest $request, $id){
         $validatedData = $request->validated();
         $apartment= $this->apartmentService->updateApartment($id, $validatedData);
         return $this->result(200,'update apartment Successfully');
     }
-    public function show($id)
+
+     public function show($id)
     {
         $apartment = $this->apartmentService->getSpecificApartment($id);
         return $this->result(200,'get apartment successfully',$apartment);

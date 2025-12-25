@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Panel;
 use Filament\Models\Contracts\HasName;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable implements HasName
 {
@@ -23,10 +25,8 @@ class User extends Authenticatable implements HasName
         'personal_photo',
         'date_of_birth',
         'ID_photo',
-        'role',
         'fcm_token',
         'is_verified'
-        // 'registration_status'
     ];
 
     protected $hidden = [
@@ -45,7 +45,7 @@ class User extends Authenticatable implements HasName
 
     public function apartments()
     {
-        return $this->hasMany(Apartment::class);
+        return $this->hasMany(Apartment::class, 'owner_id');
     }
 
     public function booking()
@@ -57,16 +57,26 @@ class User extends Authenticatable implements HasName
     {
         return $this->role === 'admin';
     }
-  
+
     public function getFilamentName(): string
     {
-        // 1. إذا كان لديك اسم أول (لمستخدم عادي)، قم بعرض الاسم الكامل.
         if ($this->first_name) {
             return trim($this->first_name . ' ' . $this->last_name);
         }
-        
-        // 2. إذا كان الاسم فارغاً (للمدير)، استخدم الإيميل أو اسم احتياطي ثابت.
-        // بما أن الإيميل قد يكون NULL أيضاً حسب الصورة، نفضل الاسم الثابت أو الإيميل مع التحقق.
-        return $this->email ?? 'مدير النظام'; 
-    }   
+        return $this->email ?? 'Admin';
+    }
+
+    protected function personalPhoto(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? asset(Storage::url($value)) : null,
+        );
+    }
+
+    protected function idPhoto(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? asset(Storage::url($value)) : null,
+        );
+    }
 }
