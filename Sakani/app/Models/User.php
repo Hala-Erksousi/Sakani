@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Filament\Panel;
 use Filament\Models\Contracts\HasName;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable implements HasName
 {
@@ -43,7 +45,7 @@ class User extends Authenticatable implements HasName
 
     public function apartments()
     {
-        return $this->hasMany(Apartment::class,'owner_id');
+        return $this->hasMany(Apartment::class, 'owner_id');
     }
 
     public function booking()
@@ -55,12 +57,26 @@ class User extends Authenticatable implements HasName
     {
         return $this->role === 'admin';
     }
-  
+
     public function getFilamentName(): string
     {
         if ($this->first_name) {
             return trim($this->first_name . ' ' . $this->last_name);
         }
-        return $this->email ?? 'مدير النظام'; 
-    }   
+        return $this->email ?? 'Admin';
+    }
+
+    protected function personalPhoto(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? asset(Storage::url($value)) : null,
+        );
+    }
+
+    protected function idPhoto(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? asset(Storage::url($value)) : null,
+        );
+    }
 }
