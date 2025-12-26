@@ -17,6 +17,13 @@ class ApartmentController extends Controller
     }
     public function store(StoreApartmentRequest $request){
      $validateData = $request->validated();
+     if (isset($validateData['governorate'])) {
+        $validateData['governorate'] = strtolower($validateData['governorate']);
+    }
+    
+    if (isset($validateData['city'])) {
+        $validateData['city'] = strtolower($validateData['city']);
+    }
      $images = $request->file('images');
      $validateData['owner_id'] = Auth::id();
      $apartment = $this->apartmentService->createNewApartment($validateData, $images);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateDateBookingRequest;
-use App\Http\Requests\UpdateStatusBookingRequest;
 use App\Services\BookingService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;

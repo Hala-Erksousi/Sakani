@@ -42,8 +42,8 @@ class StoreApartmentRequest extends FormRequest
             "title_deed"=>$stringRules,
             "governorate"=>$stringRules,
             "city"=> $stringRules,
-            'images'=>'required|array|max:4', 
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048'
+            "images"=>'required|array|max:4', 
+            "images.*" => 'image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

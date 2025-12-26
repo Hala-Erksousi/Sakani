@@ -33,7 +33,7 @@ class ApartmentService
         $isFirstImage = true;
 
         foreach ($images as $image) {
-            $path = $image->store('apartments', 'public');
+           $path = $image->store('apartments', 'public');
             $imageRecords[] = [
                 'path' => $path,
                 'main_photo' => $isFirstImage,
@@ -56,7 +56,6 @@ class ApartmentService
         $apartment->owner_phone = $apartment->owner->phone;
         $apartment->first_name = $apartment->owner->first_name;
         $apartment->last_name = $apartment->owner->last_name;
-
         $apartment->makeHidden('owner');
 
         return $apartment;
