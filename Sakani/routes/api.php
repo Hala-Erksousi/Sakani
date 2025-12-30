@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ReviewController;
 
 Route::post('/signUp', [UserController::class, 'signUp']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -35,6 +36,11 @@ Route::middleware('auth:sanctum')
        Route::put('/{bookingId}/accept', [BookingController::class,'acceptBooking']);
        Route::put('/{booking_id}/update', [BookingController::class,'update']);
     });
+
+    Route::prefix('review')
+      ->group(function () {
+       Route::post('/',[ReviewController::class,'store']);
+      });
 });
     
 Route::middleware('auth:sanctum')->group(function () {

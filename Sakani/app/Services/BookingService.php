@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\BookingAlreadyCancelledException;
+use App\Exceptions\InvalidBookingOwnershipException;
 use App\Exceptions\NotAvailableDateException;
 use App\Repositories\BookingRepository;
 use App\Exceptions\TheModelNotFoundException;
@@ -25,16 +26,22 @@ class BookingService
         $this->bookingRepository = $bookingRepository;
         $this->apartmentRepository = $apartmentRepository;
     }
+
+
     public function store(array $data)
     {
-
+        $apartment = $this->apartmentRepository->FindApartmentById($data["apartment_id"]);
+        if($apartment->owner_id == $data["user_id"]){
+            throw new InvalidBookingOwnershipException();
+        }
         $apartmentId = $data["apartment_id"];
         $startDate = $data["start_date"];
         $endDate = $data["end_date"];
         $this->checkAvailability($apartmentId, $startDate, $endDate);
-
         return $booking = $this->bookingRepository->createBooking($data);
     }
+
+
     public function checkAvailability($apartmentId, $startDate, $endDate, ?int $ignoreBookingId = null)
     {
         $query = Booking::where('apartment_id', $apartmentId)
@@ -49,11 +56,12 @@ class BookingService
                 ->where('start_date', '<=', $endDate);
         })
             ->exists();
-
         if ($overlappingDateRanges) {
             throw new NotAvailableDateException();
         }
     }
+
+
     public function getAll($userId)
     {
         $bookings = $this->bookingRepository->getAll($userId);
@@ -62,6 +70,7 @@ class BookingService
         }
         return $bookings;
     }
+
 
     public function cancelBookingByUser($bookingId)
     {
@@ -102,12 +111,13 @@ class BookingService
         if ($booking->user_id != Auth::id()) {
             throw new TheUnauthorizedActionException();
         }
-        if ($booking->status == 'cancelled') {
+        if ($booking->status == 'Cancelled') {
             throw new BookingAlreadyCancelledException();
         }
-
+        $data['apartment_id']=$booking->apartment_id;
         $this->checkAvailability($booking->apartment_id, $startDate, $endDate, $bookingId);
-        $booking->update(['start_date' => $startDate, 'end_date' => $endDate]);
+        $newTotalPrice= $this->calculateBookingPrice($data);
+        $booking->update(['start_date' => $startDate, 'end_date' => $endDate,'status'=>'Pending','total_price'=>$newTotalPrice]);
         return $booking;
     }
     public function calculateBookingPrice(array $data)

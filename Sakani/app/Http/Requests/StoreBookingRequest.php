@@ -24,8 +24,8 @@ class StoreBookingRequest extends FormRequest
         return [
 
             'apartment_id' => ['required', 'integer', 'exists:apartments,id'],
-            'start_date' => ['required', 'date', 'after_or_equal:today'],
-            'end_date' => ['required', 'date', 'after:start_date'],
+            'start_date' => ['required', /*'date', 'after_or_equal:today'*/],
+            'end_date' => ['required', /*'date', 'after:start_date'*/],
         ];
     }
 }

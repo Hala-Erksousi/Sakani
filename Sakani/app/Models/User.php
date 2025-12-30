@@ -50,6 +50,10 @@ class User extends Authenticatable implements HasName
     {
         return $this->hasMany(Booking::class);
     }
+    public function review(){
+        return $this->hasMany(Review::class);
+    }
+
 
     public function canAccessPanel(Panel $panel)
     {

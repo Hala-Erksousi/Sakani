@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class Apartment extends Model
 {
+    protected $appends=['average_rating'];
     protected $fillable = [
         'user_id',
         'price',
@@ -37,5 +39,18 @@ class Apartment extends Model
     public function mainImage(){
         return $this->hasOne(Apartment_image::class)->where('main_photo', true);
     }
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
+    protected function averageRating(): Attribute
+{
+    return Attribute::make(
+        get: function () {
+           
+            $avg = $this->reviews()->avg('stars');
+            return $avg ? round($avg, 1) : 0;
+        },
+    );
+}
 
 }

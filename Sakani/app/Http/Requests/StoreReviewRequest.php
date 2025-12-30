@@ -11,7 +11,7 @@ class StoreReviewRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class StoreReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'apartment_id'=>['required','exists:apartments,id'],
+            
             'booking_id' => ['required','exists:bookings,id','unique:reviews,booking_id'],
 
             'stars' => ['required','integer','min:1','max:5'],

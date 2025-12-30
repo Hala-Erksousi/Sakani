@@ -19,5 +19,7 @@ class ReviewController extends Controller
     public function store(StoreReviewRequest $request){
         $validateData = $request->validated();
         $validateData['user_id']=Auth::id();
+        $review=$this->reviewService->createNewReview($validateData);
+        return $this->result(201,'create Review Successfully',$review);
     }
 }
