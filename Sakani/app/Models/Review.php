@@ -4,24 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class Review extends Model
 {
     protected $fillable = [
-        'status',
-        'start_date',
-        'end_date',
+        'booking_id',
         'user_id',
         'apartment_id',
-        'total_price'
+        'stars',
     ];
+
     public function apartment(){
         return $this->belongsTo(Apartment::class);
     }
     public function user(){
+        return $this->belongsTo(User::class);
+    }
+    public function booking(){
         return $this->belongsTo(Booking::class);
     }
-    public function review(){
-        return $this->hasMany(Review::class);
-    }
-
 }

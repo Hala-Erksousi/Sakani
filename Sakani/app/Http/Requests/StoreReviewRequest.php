@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBookingRequest extends FormRequest
+class StoreReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,13 @@ class StoreBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            
+            'booking_id' => ['required','exists:bookings,id','unique:reviews,booking_id'],
 
-            'apartment_id' => ['required', 'integer', 'exists:apartments,id'],
-            'start_date' => ['required', /*'date', 'after_or_equal:today'*/],
-            'end_date' => ['required', /*'date', 'after:start_date'*/],
+            'stars' => ['required','integer','min:1','max:5'],
+
+
+            'comment'    => ['nullable','string','max:1000'],
         ];
     }
 }
