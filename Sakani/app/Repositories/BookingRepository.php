@@ -21,6 +21,6 @@ public function getAll($userId){
 }
 public function getById($id){
    return Booking::with('apartment')->find($id);
-    //return Booking::find($id);
+    
 }
 }

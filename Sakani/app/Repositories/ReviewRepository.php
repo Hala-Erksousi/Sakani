@@ -8,4 +8,5 @@ class ReviewRepository{
     public function createReview($data){
         return Review::create($data);
     }
+    
 }

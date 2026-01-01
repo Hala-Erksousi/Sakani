@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReviewController;
 
 Route::post('/signUp', [UserController::class, 'signUp']);
@@ -40,6 +41,12 @@ Route::middleware('auth:sanctum')
     Route::prefix('review')
       ->group(function () {
        Route::post('/',[ReviewController::class,'store']);
+      });
+
+    Route::prefix('favorite')
+      ->group(function () {
+        Route::post('/',[FavoriteController::class,'toggle']);
+        Route::get('/',[FavoriteController::class,'index']);
       });
 });
     

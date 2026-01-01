@@ -39,9 +39,15 @@ class Apartment extends Model
     public function mainImage(){
         return $this->hasOne(Apartment_image::class)->where('main_photo', true);
     }
+
     public function reviews(){
         return $this->hasMany(Review::class);
     }
+
+    public function favoritedBy() {
+        return $this->belongsToMany(User::class,'favorites', 'user_id', 'apartment_id');
+    }
+
     protected function averageRating(): Attribute
 {
     return Attribute::make(
