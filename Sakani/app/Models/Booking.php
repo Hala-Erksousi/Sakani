@@ -12,7 +12,8 @@ class Booking extends Model
         'end_date',
         'user_id',
         'apartment_id',
-        'total_price'
+        'total_price',
+        'is_rated'
     ];
     public function apartment(){
         return $this->belongsTo(Apartment::class);

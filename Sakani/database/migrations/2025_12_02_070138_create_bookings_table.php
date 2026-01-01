@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('apartment_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->double('total_price');
+            $table->boolean('is_rated')->default(false);
             $table->timestamps();
         });
     }

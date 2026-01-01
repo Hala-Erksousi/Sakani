@@ -26,6 +26,7 @@ class ReviewService{
         if ($booking->status !== 'Completed') {
             throw new BookingNotCompletedException();
         }
+        $booking->update(['is_rated'=>true]);
         $data['apartment_id']=$booking->apartment_id;
         return $this->reviewRepository->createReview($data);
         
