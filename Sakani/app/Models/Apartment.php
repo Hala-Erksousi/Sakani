@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Apartment extends Model
 {
-    protected $appends=['average_rating'];
+    protected $appends=['average_rating','is_favorite'];
     protected $fillable = [
         'user_id',
         'price',
@@ -39,9 +40,15 @@ class Apartment extends Model
     public function mainImage(){
         return $this->hasOne(Apartment_image::class)->where('main_photo', true);
     }
+
     public function reviews(){
         return $this->hasMany(Review::class);
     }
+
+    public function favoritedBy() {
+        return $this->belongsToMany(User::class,'favorites', 'user_id', 'apartment_id');
+    }
+
     protected function averageRating(): Attribute
 {
     return Attribute::make(
@@ -51,6 +58,23 @@ class Apartment extends Model
             return $avg ? round($avg, 1) : 0;
         },
     );
+}
+protected function isFavorite():Attribute
+{   
+    return Attribute::make(
+        get:function(){
+            $userId=Auth::id();
+            if(!$userId){
+
+                return false;
+        
+            }
+            return $this->favoritedBy()
+            ->where('user_id',$userId)
+            ->exists();
+        }
+    );
+
 }
 
 }

@@ -43,18 +43,22 @@ class User extends Authenticatable implements HasName
         ];
     }
 
-    public function apartments()
-    {
+    public function apartments() {
         return $this->hasMany(Apartment::class, 'owner_id');
     }
 
-    public function booking()
-    {
+    public function booking(){
         return $this->hasMany(Booking::class);
     }
+
     public function review(){
         return $this->hasMany(Review::class);
     }
+
+    public function favoriteApartments()
+{
+    return $this->belongsToMany(Apartment::class, 'favorites', 'user_id', 'apartment_id');
+}
 
 
     public function canAccessPanel(Panel $panel)

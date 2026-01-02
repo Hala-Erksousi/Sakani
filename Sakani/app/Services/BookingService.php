@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\BookingAlreadyAcceptedException;
 use App\Exceptions\BookingAlreadyCancelledException;
+use App\Exceptions\BookingAlreadyRejectedException;
 use App\Exceptions\InvalidBookingOwnershipException;
 use App\Exceptions\NotAvailableDateException;
 use App\Repositories\BookingRepository;
@@ -107,7 +109,14 @@ class BookingService
         if ($owner_id != $user_id) {
             throw new UnauthorizedException();
         }
+        if($booking->status=='Accepted'){
+            throw new BookingAlreadyAcceptedException();
+        }
+        if($booking->status=='Rejected'){
+            throw new BookingAlreadyRejectedException();
+        }
 
+      
         $booking->update(['status' => $status]);
         $booking->makeHidden('apartment');
         // notification for tenant

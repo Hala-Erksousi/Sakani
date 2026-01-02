@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\NotificationController;
 
@@ -50,8 +51,15 @@ Route::middleware('auth:sanctum')
         Route::post('/{notification_id}/read', [NotificationController::class, 'markAsRead']);
         Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
       });
+
+    Route::prefix('favorite')
+    ->group(function () {
+      Route::post('/', [FavoriteController::class, 'toggle']);
+      Route::get('/', [FavoriteController::class, 'index']);
+    });
   });
 
+    
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/logout', [AuthController::class, 'logout']);
   Route::get('/profile', [UserController::class, 'profile']);

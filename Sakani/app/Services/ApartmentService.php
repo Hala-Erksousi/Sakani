@@ -42,11 +42,13 @@ class ApartmentService
         }
         $this->apartmentRepository->createApartmentImages($apartment, $imageRecords);
     }
+
     public function updateApartment($id, array $data)
     {
         $apartment = $this->apartmentRepository->updateApartment($id, $data);
         return $apartment;
     }
+    
     public function getSpecificApartment($id)
     {
         $apartment = $this->apartmentRepository->FindApartmentById($id);
