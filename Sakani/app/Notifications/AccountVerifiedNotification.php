@@ -10,18 +10,16 @@ use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FirebaseNotification;
 use Illuminate\Support\Facades\Log;
 use Exception;
-
-class NewBookingRequest extends Notification
+class AccountVerifiedNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    protected $booking;
-    public function __construct($booking)
+    public function __construct()
     {
-        $this->booking = $booking;
+        //
     }
 
     /**
@@ -52,29 +50,32 @@ class NewBookingRequest extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        return [
-            'booking_id' => $this->booking->id,
-            'title'      => 'New booking request',
-            'body'       => "You have a new apartment booking request please review"
+       return [
+            'title' => 'Your account has been activated',
+            'body' => 'Your account has been activated by the admin. Welcome to the Sakani app',
         ];
     }
+
     public function toFirebase($notifiable)
     {
-        $fcmToken = $notifiable->fcm_token;
-        if (!$fcmToken)
-            return;
-        try{
-        $messaging = app('firebase.messaging');
+        $fcmToken = $notifiable->fcm_token; 
+        if (!$fcmToken) return;
 
-        $message = CloudMessage::withTarget('token', $fcmToken)
-            ->withNotification(FirebaseNotification::create(
-                'New Booking Request',
-                " New Booking Request from " . $this->booking->user->name
-            ))
-            ->withData(['booking_id' => (string)$this->booking->id]);
-        $messaging->send($message);
-        }catch(Exception $e){
-            Log::error('Firebase notification error: '.$e->getMessage());
+        try {
+            $messaging = app('firebase.messaging');
+            $message = CloudMessage::withTarget('token', $fcmToken)
+                ->withNotification(FirebaseNotification::create(
+                    'Account Activated',
+                    'Your account has been activated by the admin. Welcome to the Sakani app.'
+                ))
+                ->withData([
+                    'type' => 'account_verified',
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK'
+                ]);
+
+            $messaging->send($message);
+        } catch (Exception $e) {
+            Log::error("FCM Error (Account Activation): " . $e->getMessage());
         }
     }
 }

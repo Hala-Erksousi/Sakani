@@ -85,10 +85,6 @@ class UserResource extends Resource
                     ->hidden(fn(User $record) => $record->is_verified),
                 EditAction::make(),
                 DeleteAction::make(),
-                // Notification::make()
-                //     ->title('Your account has been activated by the admin. Welcome to the Sakani app')
-                //     ->success()
-                //     ->send()
             ]);
     }
 
