@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NotificationController;
 
 Route::post('/signUp', [UserController::class, 'signUp']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -14,7 +15,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')
-     ->group(function () {
+  ->group(function () {
 
     Route::prefix('apartment')
       ->group(function () {
@@ -24,28 +25,34 @@ Route::middleware('auth:sanctum')
         Route::put('/{apartment_id}', [ApartmentController::class, 'update']);
         Route::get('/{apartment_id}', [ApartmentController::class, 'show']);
         Route::get('/', [ApartmentController::class, 'index']);
-    });
+      });
 
     Route::prefix('booking')
       ->group(function () {
-      Route::get('/calculate',[BookingController::class,'calculateBookingPrice']);
-       Route::post('/', [BookingController::class,'store']);
-       Route::get('/', [BookingController::class,'index']);
-       Route::put('/{booking_id}/cancel', [BookingController::class,'cancelBookingByUser']);
-       Route::put('/{bookingId}/reject', [BookingController::class,'rejectBooking']);
-       Route::put('/{bookingId}/accept', [BookingController::class,'acceptBooking']);
-       Route::put('/{booking_id}/update', [BookingController::class,'update']);
-    });
+        Route::get('/calculate', [BookingController::class, 'calculateBookingPrice']);
+        Route::post('/', [BookingController::class, 'store']);
+        Route::get('/', [BookingController::class, 'index']);
+        Route::put('/{booking_id}/cancel', [BookingController::class, 'cancelBookingByUser']);
+        Route::put('/{bookingId}/reject', [BookingController::class, 'rejectBooking']);
+        Route::put('/{bookingId}/accept', [BookingController::class, 'acceptBooking']);
+        Route::put('/{booking_id}/update', [BookingController::class, 'update']);
+      });
 
     Route::prefix('review')
       ->group(function () {
-       Route::post('/',[ReviewController::class,'store']);
+        Route::post('/', [ReviewController::class, 'store']);
       });
-});
-    
+
+    Route::prefix('notifications')
+      ->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::get('/unread', [NotificationController::class, 'unreadCount']);
+        Route::post('/{notification_id}/read', [NotificationController::class, 'markAsRead']);
+        Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+      });
+  });
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/profile', [UserController::class, 'profile']);
+  Route::post('/logout', [AuthController::class, 'logout']);
+  Route::get('/profile', [UserController::class, 'profile']);
 });
-
-

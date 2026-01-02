@@ -38,7 +38,7 @@ class StoreUserRequest extends FormRequest
             "first_name"=>$nameRules,
             "last_name"=>$nameRules,
             "date_of_birth"=>["required"],
-           "personal_photo"=>$imageRules,
+            "personal_photo"=>$imageRules,
             "ID_photo"=>$imageRules,
           
         ];

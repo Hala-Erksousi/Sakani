@@ -18,7 +18,8 @@ class Booking extends Model
         return $this->belongsTo(Apartment::class);
     }
     public function user(){
-        return $this->belongsTo(Booking::class);
+        // return $this->belongsTo(Booking::class);
+        return $this->belongsTo(User::class);
     }
     public function review(){
         return $this->hasMany(Review::class);

@@ -30,6 +30,7 @@ class UpdateBookingStatusToCompleted extends Command
         $updatedCount = Booking::where('status', 'Accepted')
             ->where('end_date', '<', Carbon::today())
             ->update(['status' => 'Completed']);
+            
 
         $this->info("Update status $updatedCount bookings to Completed ");
     }
