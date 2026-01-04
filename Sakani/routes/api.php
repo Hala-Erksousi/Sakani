@@ -14,7 +14,6 @@ Route::post('/signUp', [UserController::class, 'signUp']);
 Route::post('/login', [AuthController::class, 'login']);
 
 
-
 Route::middleware('auth:sanctum')
   ->group(function () {
 
@@ -57,6 +56,7 @@ Route::middleware('auth:sanctum')
       Route::post('/', [FavoriteController::class, 'toggle']);
       Route::get('/', [FavoriteController::class, 'index']);
     });
+    Route::post('/update-fcm-token', [AuthController::class, 'updateFcmToken']);
   });
 
     
