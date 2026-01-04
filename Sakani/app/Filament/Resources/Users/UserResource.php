@@ -30,6 +30,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use App\Notifications\AccountVerifiedNotification;
 
 class UserResource extends Resource
 {
@@ -81,7 +82,18 @@ class UserResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(fn(User $record) => $record->update(['is_verified' => true]))
+                    ->action(function(User $record){
+                        $record->update(['is_verified' => true]);
+                        // Send notification
+                        $notification = new AccountVerifiedNotification($record);
+                        $record->notify($notification);
+                        $notification->toFirebase($record);
+                        Notification::make()
+                            ->title('User Verified.')
+                            ->body('The user has been verified and notified successfully')
+                            ->success()
+                            ->send();
+                    })
                     ->hidden(fn(User $record) => $record->is_verified),
                 EditAction::make(),
                 DeleteAction::make(),

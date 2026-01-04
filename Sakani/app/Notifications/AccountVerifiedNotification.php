@@ -17,9 +17,10 @@ class AccountVerifiedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    protected $user;
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -29,7 +30,7 @@ class AccountVerifiedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database','fcm'];
+        return ['database'];
     }
 
     /**

@@ -5,10 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Translatable\HasTranslations;
 
 class Apartment extends Model
 {
-    protected $appends=['average_rating','is_favorite'];
+    use HasTranslations;
+    public $translatable = [
+        'description', 
+        'title_deed',
+        'governorate', 
+        'city'
+    ];
+    protected $appends = ['average_rating', 'is_favorite'];
     protected $fillable = [
         'user_id',
         'price',
@@ -21,60 +29,62 @@ class Apartment extends Model
         'title_deed',
         'governorate',
         'city',
-        'owner_id'   
+        'owner_id'
     ];
 
-    public function owner(){
-        return $this->belongsTo(User::class,'owner_id');
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
-     public function booking(){
+    public function booking()
+    {
         return $this->hasMany(Booking::class);
     }
 
-     public function apartment_images ()  {
+    public function apartment_images()
+    {
         return $this->hasMany(Apartment_image::class);
-        
     }
-    
-    public function mainImage(){
+
+    public function mainImage()
+    {
         return $this->hasOne(Apartment_image::class)->where('main_photo', true);
     }
 
-    public function reviews(){
+    public function reviews()
+    {
         return $this->hasMany(Review::class);
     }
 
-    public function favoritedBy() {
-        return $this->belongsToMany(User::class,'favorites', 'user_id', 'apartment_id');
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'user_id', 'apartment_id');
     }
 
     protected function averageRating(): Attribute
-{
-    return Attribute::make(
-        get: function () {
-           
-            $avg = $this->reviews()->avg('stars');
-            return $avg ? round($avg, 1) : 0;
-        },
-    );
-}
-protected function isFavorite():Attribute
-{   
-    return Attribute::make(
-        get:function(){
-            $userId=Auth::id();
-            if(!$userId){
+    {
+        return Attribute::make(
+            get: function () {
 
-                return false;
-        
+                $avg = $this->reviews()->avg('stars');
+                return $avg ? round($avg, 1) : 0;
+            },
+        );
+    }
+    protected function isFavorite(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $userId = Auth::id();
+                if (!$userId) {
+
+                    return false;
+                }
+                return $this->favoritedBy()
+                    ->where('user_id', $userId)
+                    ->exists();
             }
-            return $this->favoritedBy()
-            ->where('user_id',$userId)
-            ->exists();
-        }
-    );
-
-}
-
+        );
+    }
 }
