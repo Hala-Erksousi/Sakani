@@ -33,7 +33,7 @@ class BookingController extends Controller
     public function cancelBookingByUser($bookingId){
           
           $booking= $this->bookingService->cancelBookingByUser($bookingId);
-          return $this->result('200','Cancelled Successfully', $booking);
+          return $this->result(200,'Cancelled Successfully', $booking);
     }
 
     public function acceptBooking($bookingId){

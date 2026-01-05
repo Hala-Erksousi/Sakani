@@ -41,7 +41,7 @@ class AuthController extends Controller
         $this->authService->logoutService($request);
         return response()->json([
             'code' => 200,
-            'message' => 'user logged out successfully',
+            'message' => 'user logged out successfully and FCM token cleared',
         ], 200);
     }
 

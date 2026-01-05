@@ -69,7 +69,8 @@ class NewBookingRequest extends Notification
         $message = CloudMessage::withTarget('token', $fcmToken)
             ->withNotification(FirebaseNotification::create(
                 'New Booking Request',
-                " New Booking Request from " . $this->booking->user->name
+                // " New Booking Request from " . $this->booking->user->name
+                'You have a new apartment booking request please review'
             ))
             ->withData(['booking_id' => (string)$this->booking->id]);
         $messaging->send($message);

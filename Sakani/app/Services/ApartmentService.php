@@ -7,6 +7,7 @@ use App\Exceptions\TheModelNotFoundException;
 use App\Models\Apartment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Exception;
 
 class ApartmentService
 {
@@ -87,5 +88,25 @@ class ApartmentService
         }
        
         return $query;
+    }
+
+    public function getOwnerApartments(int $ownerId)
+    {
+        return $this->apartmentRepository->getByOwnerId($ownerId);
+    }
+
+    public function deleteApartment(int $apartmentId, int $userId)
+    {
+        $apartment = $this->apartmentRepository->findById($apartmentId);
+
+        if (!$apartment) {
+            throw new TheModelNotFoundException();
+        }
+
+        if ($apartment->owner_id !== $userId) {
+            throw new Exception("You don't have permission to delete this apartment", 403);
+        }
+
+        return $this->apartmentRepository->delete($apartmentId);
     }
 }

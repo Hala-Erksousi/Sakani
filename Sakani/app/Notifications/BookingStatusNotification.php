@@ -73,7 +73,12 @@ class BookingStatusNotification extends Notification
             case 'Cancelled':
                 return [
                     'title' => 'Booking Cancelled',
-                    'body'  => 'Your booking has been cancelled successfully.',
+                    'body'  => 'The booking cancelled their booking for your apartment.',
+                ];
+            case 'Completed':
+                return [
+                    'title' => 'How was your stay?',
+                    'body' => 'Your trip has ended, please rate the apartment to help others'
                 ];
             default:
                 return [

@@ -46,12 +46,16 @@ class AuthServices
         ];
     }
 
-    public function logoutService($request){
+    public function logoutService($request)
+    {
         $user = $request->user();
-        $user->tokens()->delete();
-         if (!$request->user()) {
+        if (!$request->user()) {
             throw new UnauthorizedException();
         }
+        $user->update([
+            'fcm_token' => null
+        ]);
+        // $user->tokens()->delete();
         $request->user()->currentAccessToken()->delete();
     }
 

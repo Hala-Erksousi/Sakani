@@ -96,6 +96,12 @@ class BookingService
             throw new BookingAlreadyCancelledException();
         }
         $booking->update(['status' => 'Cancelled']);
+        $owner = $booking->apartment->owner;
+        if($owner){
+            $notification = new BookingStatusNotification($booking, 'Cancelled');
+            $owner->notify($notification);
+            $notification->toFirebase($owner);
+        }
         return $booking;
     }
 

@@ -19,6 +19,8 @@ Route::middleware('auth:sanctum')
 
     Route::prefix('apartment')
       ->group(function () {
+        Route::get('/owner', [ApartmentController::class, 'getOwnerApartments']);//owner apartments
+        Route::delete('/{apartment_id}', [ApartmentController::class, 'destroy']); 
         Route::get('/home', [ApartmentController::class, 'getApartmentHome']);
         Route::get('/filter', [ApartmentController::class, 'search']);
         Route::post('/', [ApartmentController::class, 'store']);
