@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Apartment extends Model
 {
@@ -21,7 +22,7 @@ class Apartment extends Model
         'title_deed',
         'governorate',
         'city',
-        'owner_id'   
+        'owner_id'
     ];
 
     public function owner(){
@@ -34,9 +35,9 @@ class Apartment extends Model
 
      public function apartment_images ()  {
         return $this->hasMany(Apartment_image::class);
-        
+
     }
-    
+
     public function mainImage(){
         return $this->hasOne(Apartment_image::class)->where('main_photo', true);
     }
@@ -53,24 +54,25 @@ class Apartment extends Model
 {
     return Attribute::make(
         get: function () {
-           
+
             $avg = $this->reviews()->avg('stars');
             return $avg ? round($avg, 1) : 0;
         },
     );
 }
 protected function isFavorite():Attribute
-{   
+{
     return Attribute::make(
         get:function(){
-            $userId=Auth::id();
-            if(!$userId){
+            $user = auth('sanctum')->user();
+            if(!$user){
 
                 return false;
-        
+
             }
-            return $this->favoritedBy()
-            ->where('user_id',$userId)
+            return DB::table('favorites')
+            ->where('user_id',$user->id)
+            ->where('apartment_id',$this->id)
             ->exists();
         }
     );
