@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')
         Route::patch('/{bookingId}/reject', [BookingController::class, 'rejectBooking']);
         Route::patch('/{bookingId}/accept', [BookingController::class, 'acceptBooking']);
         Route::patch('/{booking_id}/update', [BookingController::class, 'update']);
+        Route::get('/request',[BookingController::class,'showBookingRequests']);
       });
 
     Route::prefix('review')
