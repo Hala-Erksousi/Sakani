@@ -51,5 +51,18 @@ class ApartmentRepository
        
         return $query;
     }
-    
+    public function getByOwnerId(int $ownerId)
+    {
+        return Apartment::where('owner_id', $ownerId)->get();
+    }
+
+    public function delete(int $id)
+    {
+        return Apartment::where('id', $id)->delete();
+    }
+
+    public function findById(int $id)
+    {
+        return Apartment::find($id);
+    }
 }

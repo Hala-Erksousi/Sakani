@@ -56,7 +56,17 @@ class ApartmentController extends Controller
         return $this->result('200','get data Successfully',$apartment);
 
     }
-    
-    
-    
+    public function getOwnerApartments(){
+        $owner_id=Auth::id();
+        $apartments= $this->apartmentService->getOwnerApartments($owner_id);
+        return $this->result(200,'get owner apartments Successfully',$apartments);
+    }
+
+    public function destroy($apartment_id)
+    {
+        $user_id = Auth::id();
+        $this->apartmentService->deleteApartment($apartment_id, $user_id);
+
+        return $this->result(200, 'Apartment deleted successfully');
+    }
 }

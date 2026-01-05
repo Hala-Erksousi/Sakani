@@ -7,9 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use App\Exceptions\UnauthorizedHttpException;
 use App\Exceptions\ValidationException;
 use App\Exceptions\UnauthorizedException;
+use App\Repositories\AuthRepository;
 
 class AuthServices
 {
+    protected $authRepository;
+    public function __construct(AuthRepository $authRepository)
+    {
+        $this->authRepository = $authRepository;
+    }
     public function loginService($request)
     {
         try {
@@ -40,12 +46,21 @@ class AuthServices
         ];
     }
 
-    public function logoutService($request){
+    public function logoutService($request)
+    {
         $user = $request->user();
-        $user->tokens()->delete();
-         if (!$request->user()) {
+        if (!$request->user()) {
             throw new UnauthorizedException();
         }
+        $user->update([
+            'fcm_token' => null
+        ]);
+        // $user->tokens()->delete();
         $request->user()->currentAccessToken()->delete();
+    }
+
+    public function updateFcmTokenService($userId, $fcm_token)
+    {
+        return $this->authRepository->updateFcmToken($userId, $fcm_token);
     }
 }

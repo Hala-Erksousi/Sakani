@@ -17,6 +17,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Notifications\BookingStatusNotification;
+use App\Notifications\NewBookingRequest;
+use App\Notifications\BookingUpdateRequested;
+
 
 class BookingService
 {
@@ -33,14 +37,22 @@ class BookingService
     public function store(array $data)
     {
         $apartment = $this->apartmentRepository->FindApartmentById($data["apartment_id"]);
-        if($apartment->owner_id == $data["user_id"]){
+        if ($apartment->owner_id == $data["user_id"]) {
             throw new InvalidBookingOwnershipException();
         }
         $apartmentId = $data["apartment_id"];
         $startDate = $data["start_date"];
         $endDate = $data["end_date"];
         $this->checkAvailability($apartmentId, $startDate, $endDate);
-        return $booking = $this->bookingRepository->createBooking($data);
+        $booking = $this->bookingRepository->createBooking($data);
+        //notification for owner
+        $owner = $booking->apartment->owner;
+        if ($owner) {
+            $notification = new NewBookingRequest($booking);
+            $owner->notify($notification);
+            $notification->toFirebase($owner);
+        }
+        return $booking;
     }
 
 
@@ -84,16 +96,23 @@ class BookingService
             throw new BookingAlreadyCancelledException();
         }
         $booking->update(['status' => 'Cancelled']);
+        $owner = $booking->apartment->owner;
+        if($owner){
+            $notification = new BookingStatusNotification($booking, 'Cancelled');
+            $owner->notify($notification);
+            $notification->toFirebase($owner);
+        }
         return $booking;
     }
-    
-    public function updateStatueBooking($bookingId,$status,$user_id){
+
+    public function updateStatueBooking($bookingId, $status, $user_id)
+    {
         $booking = $this->bookingRepository->getById($bookingId);
         if (!$booking) {
             throw new TheModelNotFoundException();
         }
-        $owner_id=$booking->apartment->owner_id;
-        if($owner_id != $user_id){
+        $owner_id = $booking->apartment->owner_id;
+        if ($owner_id != $user_id) {
             throw new UnauthorizedException();
         }
         if($booking->status=='Accepted'){
@@ -106,6 +125,13 @@ class BookingService
       
         $booking->update(['status' => $status]);
         $booking->makeHidden('apartment');
+        // notification for tenant
+        $tenant = $booking->user;
+        if($tenant){
+            $notification = new BookingStatusNotification($booking, $status);
+            $tenant->notify($notification);
+            $notification->toFirebase($tenant);
+        }
         return $booking;
     }
 
@@ -123,10 +149,18 @@ class BookingService
         if ($booking->status == 'Cancelled') {
             throw new BookingAlreadyCancelledException();
         }
-        $data['apartment_id']=$booking->apartment_id;
+        $data['apartment_id'] = $booking->apartment_id;
         $this->checkAvailability($booking->apartment_id, $startDate, $endDate, $bookingId);
-        $newTotalPrice= $this->calculateBookingPrice($data);
-        $booking->update(['start_date' => $startDate, 'end_date' => $endDate,'status'=>'Pending','total_price'=>$newTotalPrice]);
+        $newTotalPrice = $this->calculateBookingPrice($data);
+        $booking->update(['start_date' => $startDate, 'end_date' => $endDate, 'status' => 'Pending', 'total_price' => $newTotalPrice]);
+        //notification for owner
+        $owner = $booking->apartment->owner;
+        if($owner){
+            $notification = new BookingUpdateRequested($booking);
+            $owner->notify($notification);
+            $notification->toFirebase($owner);
+
+        }
         return $booking;
     }
     public function calculateBookingPrice(array $data)
@@ -136,7 +170,7 @@ class BookingService
         $end = Carbon::parse($data["end_date"]);
         $days = $start->diffInDays($end);
 
-        $pricePerDay = $apartment->price / 30; 
+        $pricePerDay = $apartment->price / 30;
         $totalPrice = round($days * $pricePerDay, 2);
         return $totalPrice;
     }

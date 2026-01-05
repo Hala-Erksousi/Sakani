@@ -20,16 +20,4 @@ class ListUsers extends ListRecords
             CreateAction::make(),
         ];
     }
-    // public function getTabs(): array
-    // {
-    //     return [
-    //         'all' => Tab::make('All Users'),
-    //         'pending' => Tab::make('Pending Approval')
-    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('is_verified', false))
-    //             ->badge(User::query()->where('is_verified', false)->count())
-    //             ->badgeColor('warning'),
-    //         'verified' => Tab::make('Verified')
-    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('is_verified', true)),
-    //     ];
-    // }
 }
