@@ -20,11 +20,11 @@ Route::middleware('auth:sanctum')
     Route::prefix('apartment')
       ->group(function () {
         Route::get('/owner', [ApartmentController::class, 'getOwnerApartments']);//owner apartments
-        Route::delete('/{apartment_id}', [ApartmentController::class, 'destroy']); 
+        Route::delete('/{apartment_id}', [ApartmentController::class, 'destroy']);
         Route::get('/home', [ApartmentController::class, 'getApartmentHome']);
         Route::get('/filter', [ApartmentController::class, 'search']);
         Route::post('/', [ApartmentController::class, 'store']);
-        Route::put('/{apartment_id}', [ApartmentController::class, 'update']);
+        Route::patch('/{apartment_id}', [ApartmentController::class, 'update']);
         Route::get('/{apartment_id}', [ApartmentController::class, 'show']);
         Route::get('/', [ApartmentController::class, 'index']);
       });
@@ -34,10 +34,10 @@ Route::middleware('auth:sanctum')
         Route::get('/calculate', [BookingController::class, 'calculateBookingPrice']);
         Route::post('/', [BookingController::class, 'store']);
         Route::get('/', [BookingController::class, 'index']);
-        Route::put('/{booking_id}/cancel', [BookingController::class, 'cancelBookingByUser']);
-        Route::put('/{bookingId}/reject', [BookingController::class, 'rejectBooking']);
-        Route::put('/{bookingId}/accept', [BookingController::class, 'acceptBooking']);
-        Route::put('/{booking_id}/update', [BookingController::class, 'update']);
+        Route::patch('/{booking_id}/cancel', [BookingController::class, 'cancelBookingByUser']);
+        Route::patch('/{bookingId}/reject', [BookingController::class, 'rejectBooking']);
+        Route::patch('/{bookingId}/accept', [BookingController::class, 'acceptBooking']);
+        Route::patch('/{booking_id}/update', [BookingController::class, 'update']);
       });
 
     Route::prefix('review')
@@ -61,7 +61,7 @@ Route::middleware('auth:sanctum')
     Route::post('/update-fcm-token', [AuthController::class, 'updateFcmToken']);
   });
 
-    
+
 Route::middleware('auth:sanctum')->group(function () {
   Route::post('/logout', [AuthController::class, 'logout']);
   Route::get('/profile', [UserController::class, 'profile']);
