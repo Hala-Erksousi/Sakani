@@ -53,7 +53,7 @@ class ApartmentRepository
     }
     public function getByOwnerId(int $ownerId)
     {
-        return Apartment::where('owner_id', $ownerId)->get();
+        return Apartment::where('owner_id', $ownerId)->with('mainImage')->get();
     }
 
     public function delete(int $id)
