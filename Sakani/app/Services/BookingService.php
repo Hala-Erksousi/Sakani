@@ -122,7 +122,7 @@ class BookingService
             throw new BookingAlreadyRejectedException();
         }
 
-      
+
         $booking->update(['status' => $status]);
         $booking->makeHidden('apartment');
         // notification for tenant
@@ -173,5 +173,10 @@ class BookingService
         $pricePerDay = $apartment->price / 30;
         $totalPrice = round($days * $pricePerDay, 2);
         return $totalPrice;
+    }
+    public function showBookingRequest($userId){
+        $bookings=$this->bookingRepository->showBookingRequests($userId);
+        return $bookings;
+
     }
 }

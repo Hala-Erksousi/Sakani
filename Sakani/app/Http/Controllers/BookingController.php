@@ -31,7 +31,7 @@ class BookingController extends Controller
 
     }
     public function cancelBookingByUser($bookingId){
-          
+
           $booking= $this->bookingService->cancelBookingByUser($bookingId);
           return $this->result(200,'Cancelled Successfully', $booking);
     }
@@ -47,9 +47,9 @@ class BookingController extends Controller
         $booking=$this->bookingService->updateStatueBooking($bookingId,'Rejected',$user_id);
         return $this->result('200','reject Successfully', $booking);
     }
-    
+
      public function update(UpdateDateBookingRequest $request, $bookingId){
-        
+
          $validateData = $request->validated();
           $booking= $this->bookingService->updateDate($bookingId,$validateData);
           return $this->result('200','Update Successfully', $booking);
@@ -58,7 +58,13 @@ class BookingController extends Controller
         $validateData = $request->validated();
         $total_price=$this->bookingService->calculateBookingPrice($validateData);
         return $this->result(200,"calculate total price Successfully" , $total_price);
-      
 
+
+     }
+
+     public function showBookingRequests(){
+        $userId=Auth::id();
+        $bookings=$this->bookingService->showBookingRequest($userId);
+        return $this->result(200,'get all booking request Successfully',$bookings);
      }
 }
