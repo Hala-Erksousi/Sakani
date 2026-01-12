@@ -29,7 +29,10 @@ class BookingRepository
     {
         $bookings = Booking::whereHas('apartment', function ($query) use($userId) {
             $query->where('owner_id', '=', $userId);
-        })->get();
+        })->with(['user'=>function($query){
+            $query->select('id','first_name','last_name');
+        }])
+        ->get();
         return $bookings;
     }
 }
